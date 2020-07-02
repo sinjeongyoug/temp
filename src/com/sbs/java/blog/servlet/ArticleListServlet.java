@@ -22,8 +22,6 @@ public class ArticleListServlet extends HttpServlet {
 	private List<Article> getArticles() {
 		String url = "jdbc:mysql://site27.iu.gy:3306/site27?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
 		String user = "site27";
-//		String url = "jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
-//		String user = "sbsst";
 		String password = "sbs123414";
 		String driverName = "com.mysql.cj.jdbc.Driver";
 
