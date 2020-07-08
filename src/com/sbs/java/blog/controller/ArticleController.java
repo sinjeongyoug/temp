@@ -30,13 +30,15 @@ public class ArticleController extends Controller {
 			return doActionDetail(req, resp);
 		case "doWrite":
 			return doActionDoWrite(req, resp);
+		case "write":
+			return doActionDoWrite(req, resp);
 		}
 
 		return "";
 	}
 
 	private String doActionDoWrite(HttpServletRequest req, HttpServletResponse resp) {
-		return null;
+		return "article/write.jsp";
 	}
 
 	private String doActionDetail(HttpServletRequest req, HttpServletResponse resp) {
