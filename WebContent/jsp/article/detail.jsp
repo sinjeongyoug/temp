@@ -1,13 +1,9 @@
-<%@ page import="java.util.List"%>
 <%@ page import="com.sbs.java.blog.dto.Article"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
 <%
-	List<Article> articles = (List<Article>) request.getAttribute("articles");
-	int totalPage = (int) request.getAttribute("totalPage");
-	int paramPage = (int) request.getAttribute("page");
-	String cateItemName = (String)request.getAttribute("cateItemName");
+	Article article = (Article) request.getAttribute("article");
 %>
 <!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
 <script
@@ -45,72 +41,25 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
-<style>
-.page-box>ul>li>a {
-	padding: 0 10px;
-	text-decoration: underline;
-	color: #787878;
-}
-.page-box>ul>li:hover>a {
-	color: black;
-}
-.page-box>ul>li.current>a {
-	color: red;
-}
-.table {
-    width:100%;
-	border-top: 1px solid black;
-	padding: 5px 0;
-}
-.table:last-child{
-	border-bottom: 1px solid black;
-}
-
-</style>
-
-<h1 class="con">
-	<%=cateItemName%>
-</h1>
-
-<div class="con">총 게시물 수 : ${totalCount}</div>
-
 <div class="con">
+	<h1><%=article.getTitle()%></h1>
 
-	<ul>
-		<%
-			for (Article article : articles) {
-		%>
-		<li class="table"><a href="./detail?id=<%=article.getId()%>"><%=article.getId()%>,
-				<%=article.getCateItemId()%>, <%=article.getTitle()%></a></li>
-		<%
-			}
-		%>
-	</ul>
+	<div>이모지 테스트 : 😀😁</div>
+
+	<script type="text/x-template" id="origin1" style="display: none;"><%=article.getBody()%></script>
+	<div id="viewer1"></div>
+	<script>
+		var editor1__initialValue = $('#origin1').html().trim();
+		var editor1 = new toastui.Editor({
+			el : document.querySelector('#viewer1'),
+			initialValue : editor1__initialValue,
+			viewer : true,
+			plugins : [ toastui.Editor.plugin.codeSyntaxHighlight,
+					youtubePlugin, replPlugin, codepenPlugin ]
+		});
+	</script>
 </div>
 
-<div class="con page-box">
-	<ul class="flex flex-jc-c">
-		<%
-			for (int i = 1; i <= totalPage; i++) {
-		%>
-		<li class="<%=i == paramPage ? "current" : ""%>"><a
-			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>" class="block"><%=i%></a></li>
-		<%
-			}
-		%>
-	</ul>
-</div>
 
-<div class="con search-box flex flex-jc-c">
-
-	<form action="${pageContext.request.contextPath}/s/article/list">
-		<input type="hidden" name="page" value="1" /> <input type="hidden"
-			name="cateItemId" value="${param.cateItemId}" /> <input
-			type="hidden" name="searchKeywordType" value="title" /> <input
-			type="text" name="searchKeyword" value="${param.searchKeyword}" />
-		<button type="submit">검색</button>
-	</form>
-
-</div>
 
 <%@ include file="/jsp/part/foot.jspf"%>

@@ -4,5 +4,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
 
-	
+	<div class="con">
+	<img src="../../resource/img/peview.jpg" alt="" class="img"/>
+	</div>
+
 <%@ include file="/jsp/part/foot.jspf"%>

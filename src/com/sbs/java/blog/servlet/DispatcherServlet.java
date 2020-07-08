@@ -8,12 +8,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/s/article/detail")
-public class ArticleDetailSevlet extends HttpServlet {
+import com.sbs.java.blog.app.App;
 
-	@Override
+@WebServlet("/s/*")
+public class DispatcherServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.getWriter().append("Hi");
+		new App(req, resp).start();
 	}
 
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
+	}
 }
