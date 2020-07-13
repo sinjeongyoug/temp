@@ -1,35 +1,29 @@
 package com.sbs.java.blog.dao;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.sql.Connection;
 
 import com.sbs.java.blog.util.DBUtil;
 
-@WebServlet("/MemberDao")
-public class MemberDao extends HttpServlet {
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+public class MemberDao {
+	
+	private Connection dbConn;
+	
+	public MemberDao(Connection dbConn) {
+		this.dbConn = dbConn;
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
-	public static int join(String loginID, String passward) {
+	
+	public int join(String loginID, String password) {
 		String sql = "";
 
-		sql += String.format("INSERT INTO article ");
-		sql += String.format("SET regDate = NOW() ");
-		sql += String.format(", loginID = '%s' ", loginID);
-		sql += String.format(", passward = '%s' ", passward);
+		sql += String.format("INSERT INTO `member` ");
+		sql += String.format("SET regDate = NOW()");
+		sql += String.format(", updateDate = NOW()");
+		sql += String.format(", loginId = '%s'", loginID);
+		sql += String.format(", loginPw = '%s'", password);
 		sql += String.format(", displayStatus = '1' ");
 		
 		
-		return DBUtil.insert(sql);
+		return DBUtil.insert(dbConn, sql);
 	}
 
 }

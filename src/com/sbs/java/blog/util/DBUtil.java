@@ -14,7 +14,6 @@ import java.util.Map;
 import com.sbs.java.blog.exception.SQLErrorException;
 
 public class DBUtil {
-	private static Connection dbConn;
 
 	public static Map<String, Object> selectRow(Connection dbConn, String sql) {
 		List<Map<String, Object>> rows = selectRows(dbConn, sql);
@@ -151,42 +150,4 @@ public class DBUtil {
 		return id;
 	}
 
-	public static int insert(String sql) {
-		int id = -1;
-
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			stmt = dbConn.createStatement();
-			stmt.execute(sql, Statement.RETURN_GENERATED_KEYS);
-			rs = stmt.getGeneratedKeys();
-
-			if (rs.next()) {
-				id = rs.getInt(1);
-			}
-
-		} catch (SQLException e) {
-			throw new SQLErrorException("SQL 예외, SQL : " + sql);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					throw new SQLErrorException("SQL 예외, rs 닫기" + sql);
-				}
-			}
-
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					throw new SQLErrorException("SQL 예외, stmt 닫기" + sql);
-				}
-			}
-
-		}
-
-		return id;
-	}
 }

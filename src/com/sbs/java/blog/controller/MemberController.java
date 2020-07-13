@@ -5,11 +5,8 @@ import java.sql.Connection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sbs.java.blog.service.ArticleService;
-import com.sbs.java.blog.service.MemberService;
-
-public class MemberController extends Controller {
-
+public class MemberController extends Controller {	
+	
 	public MemberController(Connection dbConn, String actionMethodName, HttpServletRequest req,
 			HttpServletResponse resp) {
 		super(dbConn, actionMethodName, req, resp);
@@ -24,7 +21,7 @@ public class MemberController extends Controller {
 	@Override
 	public String doAction() {
 		switch (actionMethodName) {
-		case "dojoin":
+		case "doJoin":
 			return doActionDojoin(req, resp);
 		case "join":
 			return doActionJoin(req, resp);
@@ -39,11 +36,11 @@ public class MemberController extends Controller {
 
 	private String doActionDojoin(HttpServletRequest req, HttpServletResponse resp) {
 		String loginID = req.getParameter("loginID");
-		String passward = req.getParameter("passward");
+		String password = req.getParameter("password");
 		
-		int id = MemberService.join(loginID, passward);
+		int id = memberService.join(loginID, password);
 		
-		return "html:<script> alert('" + id + "회원가입성공.'); location.replace('home'); </script>";
+		return "html:<script> alert('" + id + "회원가입 성공.'); location.replace('../home/main'); </script>";
 	}
 
 }

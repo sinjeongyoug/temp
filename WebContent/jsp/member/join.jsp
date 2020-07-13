@@ -49,7 +49,7 @@
 </style>
 
 <div class="write-form-box con">
-	<form action="doWrite" method="POST" class="write-form form1">
+	<form action="doJoin" method="POST" class="write-form form1">
 		<div class="form-row ">
 		<i class="far fa-angry"></i>
 			<div class="label">아이디</div>
@@ -60,13 +60,30 @@
 		<div class="form-row glow">
 			<div class="label">비밀번호</div>
 			<div class="input">
-				<input name="passward" type="text" placeholder="비밀번호를 입력해주세요." />
+				<input name="password" type="text" placeholder="비밀번호를 입력해주세요." />
+			</div>
+		<div class="form-row title">
+			<div class="label">이름</div>
+			<div class="input">
+				<input name="name" type="text" placeholder="이름을 입력해주세요." />
+			</div>
+		</div>
+		<div class="form-row land">
+			<div class="label">이메일</div>
+			<div class="input">
+				<input name="email" type="text" placeholder="이메일을 입력해주세요." />
+			</div>
+		</div>
+		<div class="form-row land">
+			<div class="label">닉네임</div>
+			<div class="input">
+				<input name="nickname" type="text" placeholder="닉네임을 입력해주세요." />
 			</div>
 		</div>
 		<div class="form-row tw">
 			<div class="label">비밀번호 확인</div>
-			<div class="input">
-				<input name="Confirm Password" type="text" placeholder="비밀번호를 확인해주세요." />
+			<div class="input">	
+				<input name="ConfirmPassword" type="text" placeholder="비밀번호를 확인해주세요." />
 			</div>
 		</div>
 		<div class="form-row">
