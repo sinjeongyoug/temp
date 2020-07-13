@@ -1,8 +1,10 @@
 package com.sbs.java.blog.util;
 
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 public class Util {
 	public static boolean empty(HttpServletRequest req, String paramName) {

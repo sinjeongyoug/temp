@@ -54,6 +54,9 @@
 				<li>
 					<a href="${pageContext.request.contextPath}/s/home/main"class="block">Home</a>
 		        </li>
+		        <li>
+					<a href="${pageContext.request.contextPath}/s/member/join"class="block">join</a>
+		        </li>
 				<li>
 					<a href="${pageContext.request.contextPath}/s/article/write"class="block">write</a>
 				</li>
@@ -99,20 +102,18 @@
 				<ul class="flex height-100p">
 					<li><a href="${pageContext.request.contextPath}/s/home/main"
 						class="flex height-100p flex-ai-c">Home</a></li>
-					<li><a href="${pageContext.request.contextPath}/s/article/write"class="flex height-100p flex-ai-c">write</a>
+					<li>
+					<a href="${pageContext.request.contextPath}/s/member/join"class="flex height-100p flex-ai-c">join</a></li>
+					<li><a href="${pageContext.request.contextPath}/s/article/write"
+					class="flex height-100p flex-ai-c">write</a>
 					</li>
 					<li>
 					<a href="#" class="flex height-100p flex-ai-c">Articles</a>
 						<ul>
-							<li><a
-								href="${pageContext.request.contextPath}/s/article/list"
-								class="block">flex</a></li>
 							<%
 								for (CateItem cateItem : cateItems) {
 							%>
-							<li><a
-								href="${pageContext.request.contextPath}/s/article/list?cateItemId=<%=cateItem.getId()%>"
-								class="block"><%=cateItem.getName()%></a></li>
+							<li><a href="${pageContext.request.contextPath}/s/article/list?cateItemId=<%=cateItem.getId()%>" class="block"><%=cateItem.getName()%></a></li>
 							<%
 								}
 							%>

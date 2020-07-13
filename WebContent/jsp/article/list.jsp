@@ -110,7 +110,6 @@
 			type="text" name="searchKeyword" value="${param.searchKeyword}" />
 		<button type="submit">검색</button>
 	</form>
-
 </div>
 
 <%@ include file="/jsp/part/foot.jspf"%>

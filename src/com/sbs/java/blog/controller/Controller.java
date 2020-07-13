@@ -16,6 +16,7 @@ public abstract class Controller {
 	protected HttpServletResponse resp;
 
 	protected ArticleService articleService;
+	
 
 	public Controller(Connection dbConn, String actionMethodName, HttpServletRequest req, HttpServletResponse resp) {
 		this.dbConn = dbConn;

@@ -350,23 +350,27 @@ label[for] {
 	height: 100px;
 	background-color:white;
 	color: black;
-	border-bottom : 2px solid black;
+	border-bottom : 1px solid black;
 }
 
 .top-bar .logo {
-	font-size: 3rem;
+	font-size: 2rem;
 	padding: 0 30px;
 }
 
 .top-bar .menu-box-1>ul>li>a {
-	padding: 0 30px;
-	font-weight: bold;
-	font-size: 1.2rem;
+	padding: 0px 30px;
+	height: 100px;
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: transform 0.3s;
+    
 }
 
 .top-bar .menu-box-1>ul>li:hover>a {
-	background-color: white;
-	color: black;
+	transform: translateX(10px) translateY(10px);
+	color : #afafaf;
 }
 
 .top-bar .menu-box-1 ul>li {
@@ -390,20 +394,21 @@ label[for] {
 
 .top-bar .menu-box-1>ul ul>li>a {
 	font-weight: bold;
+	color: black;
 	text-align: center;
 	padding: 30px 0;
 	border : 1px solid black;
+	transition: box-shadow 0.3s;
 }
 .top-bar .menu-box-1>ul ul>li:not(:first-child)>a {
 	border-top : none;
 }
 .top-bar .menu-box-1>ul ul>li:first-child>a {
-	border-top : 2px solid black;
+	border-top : none;
 }
 
 .top-bar .menu-box-1>ul ul>li:hover>a {
-	background-color: black;
-	color: white;
+	box-shadow: 10px 5px 5px red;
 }
 
 /* 탑바 끝 */

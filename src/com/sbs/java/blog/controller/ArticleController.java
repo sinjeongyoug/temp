@@ -31,15 +31,25 @@ public class ArticleController extends Controller {
 		case "doWrite":
 			return doActionDoWrite(req, resp);
 		case "write":
-			return doActionDoWrite(req, resp);
+			return doActionWrite(req, resp);
 		}
 
 		return "";
 	}
-
-	private String doActionDoWrite(HttpServletRequest req, HttpServletResponse resp) {
-		return "article/write.jsp";
-	}
+	
+		private String doActionWrite(HttpServletRequest req, HttpServletResponse resp) {
+			return "article/write.jsp";
+		}
+		
+		private String doActionDoWrite(HttpServletRequest req, HttpServletResponse resp) {
+			String title = req.getParameter("title");
+			String body = req.getParameter("body");
+			int cateItemId = Util.getInt(req, "cateItemId");
+			
+			int id = articleService.write(cateItemId, title, body);
+			
+			return "html:<script> alert('" + id + "번 게시물이 생성되었습니다.'); location.replace('list'); </script>";
+		}
 
 	private String doActionDetail(HttpServletRequest req, HttpServletResponse resp) {
 		if (Util.empty(req, "id")) {
