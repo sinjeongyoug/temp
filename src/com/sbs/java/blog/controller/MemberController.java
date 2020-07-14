@@ -37,8 +37,11 @@ public class MemberController extends Controller {
 	private String doActionDojoin(HttpServletRequest req, HttpServletResponse resp) {
 		String loginID = req.getParameter("loginID");
 		String password = req.getParameter("password");
+		String email = req.getParameter("email");
+		String name = req.getParameter("name");
+		String nickname = req.getParameter("nickname");
 		
-		int id = memberService.join(loginID, password);
+		int id = memberService.join(loginID, password, email, name, nickname);
 		
 		return "html:<script> alert('" + id + "회원가입 성공.'); location.replace('../home/main'); </script>";
 	}

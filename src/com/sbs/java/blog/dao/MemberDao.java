@@ -12,7 +12,7 @@ public class MemberDao {
 		this.dbConn = dbConn;
 	}
 	
-	public int join(String loginID, String password) {
+	public int join(String loginID, String password, String email, String name, String nickname) {
 		String sql = "";
 
 		sql += String.format("INSERT INTO `member` ");
@@ -20,7 +20,9 @@ public class MemberDao {
 		sql += String.format(", updateDate = NOW()");
 		sql += String.format(", loginId = '%s'", loginID);
 		sql += String.format(", loginPw = '%s'", password);
-		sql += String.format(", displayStatus = '1' ");
+		sql += String.format(", email = '%s'", email);
+		sql += String.format(", name = '%s'", name);
+		sql += String.format(", nickname = '%s'", nickname);
 		
 		
 		return DBUtil.insert(dbConn, sql);
