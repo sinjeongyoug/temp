@@ -8,23 +8,54 @@ import java.sql.Statement;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.sbs.java.blog.dto.Attr;
+import com.sbs.java.blog.util.Util;
+
 public class TestController extends Controller {
 	public TestController(Connection dbConn, String actionMethodName, HttpServletRequest req,
 			HttpServletResponse resp) {
 		super(dbConn, actionMethodName, req, resp);
 	}
+	
 	@Override
 	public String doAction() {
 		switch (actionMethodName) {
 		case "dbInsert":
-			return doActionDbInsert();
+			return actionDbInsert();
 		case "dbSelect":
-			return doActionDbSelect();
+			return actionDbSelect();
+		case "sendMail":
+			return actionSendMail();
+		case "attr":
+			return actionAttr();
+		case "attr2":
+			return actionAttr2();
 		}
+
 		return "";
 	}
 
-	private String doActionDbInsert() {
+	private String actionAttr() {
+		attrService.setValue("member__1__common__tempPasswordExpireDate", "2020-07-02 12:12:12");
+		String tempPasswordExpireDate = attrService.getValue("member__1__common__tempPasswordExpireDate");
+		attrService.remove("member__1__common__tempPasswordExpireDate");
+		return "html:" + tempPasswordExpireDate;
+	}
+
+	private String actionAttr2() {
+		attrService.setValue("member__1__extra__tempPasswordExpireDate", "2020-07-02 12:12:12");
+		Attr tempPasswordExpireDateAttr = attrService.get("member__1__extra__tempPasswordExpireDate");
+		attrService.remove("member__1__extra__tempPasswordExpireDate");
+		return "html:" + tempPasswordExpireDateAttr.getId();
+	}
+	
+	private String actionSendMail() {
+		Util.sendMail("tlswjddyd4@gmail.com", "jzjlbmggzlafpmqc", "tlswjddyd4@gmail.com", "신정용", "tlswjddyd4@naver.com", "안녕", "잘가");
+		return "html:성공";
+	}
+
+	private String actionDbInsert() {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		int id = -1;
@@ -51,7 +82,6 @@ public class TestController extends Controller {
 					e.printStackTrace();
 				}
 			}
-
 			if (stmt != null) {
 				try {
 					stmt.close();
@@ -60,11 +90,10 @@ public class TestController extends Controller {
 				}
 			}
 		}
-
 		return "html:" + id;
 	}
 
-	private String doActionDbSelect() {
+	private String actionDbSelect() {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String title = null;
@@ -86,7 +115,6 @@ public class TestController extends Controller {
 					e.printStackTrace();
 				}
 			}
-
 			if (stmt != null) {
 				try {
 					stmt.close();
@@ -95,8 +123,10 @@ public class TestController extends Controller {
 				}
 			}
 		}
-
 		return "html:" + title;
 	}
-
+	@Override
+	public String getControllerName() {
+		return "test";
+	}
 }

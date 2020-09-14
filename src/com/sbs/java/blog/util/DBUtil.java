@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,8 +14,7 @@ import java.util.Map;
 import com.sbs.java.blog.exception.SQLErrorException;
 
 public class DBUtil {
-
-	public static Map<String, Object> selectRow(Connection dbConn, String sql) {
+	public static Map<String, Object> selectRow(Connection dbConn, SecSql sql) {
 		List<Map<String, Object>> rows = selectRows(dbConn, sql);
 
 		if (rows.size() == 0) {
@@ -26,15 +24,15 @@ public class DBUtil {
 		return rows.get(0);
 	}
 
-	public static List<Map<String, Object>> selectRows(Connection dbConn, String sql) throws SQLErrorException {
+	public static List<Map<String, Object>> selectRows(Connection dbConn, SecSql sql) throws SQLErrorException {
 		List<Map<String, Object>> rows = new ArrayList<>();
 
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		try {
-			stmt = dbConn.createStatement();
-			rs = stmt.executeQuery(sql);
+			stmt = sql.getPreparedStatement(dbConn);
+			rs = stmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnSize = metaData.getColumnCount();
 
@@ -66,7 +64,7 @@ public class DBUtil {
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					throw new SQLErrorException("SQL 예외, rs 닫기, SQL :" + sql, e);
+					throw new SQLErrorException("SQL 예외, rs 닫기, SQL : " + sql, e);
 				}
 			}
 
@@ -74,7 +72,7 @@ public class DBUtil {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					throw new SQLErrorException("SQL 예외, stmt 닫기, SQL :" + sql, e);
+					throw new SQLErrorException("SQL 예외, stmt 닫기, SQL : " + sql, e);
 				}
 			}
 		}
@@ -82,7 +80,7 @@ public class DBUtil {
 		return rows;
 	}
 
-	public static int selectRowIntValue(Connection dbConn, String sql) {
+	public static int selectRowIntValue(Connection dbConn, SecSql sql) {
 		Map<String, Object> row = selectRow(dbConn, sql);
 
 		for (String key : row.keySet()) {
@@ -92,7 +90,7 @@ public class DBUtil {
 		return -1;
 	}
 
-	public static String selectRowStringValue(Connection dbConn, String sql) {
+	public static String selectRowStringValue(Connection dbConn, SecSql sql) {
 		Map<String, Object> row = selectRow(dbConn, sql);
 
 		for (String key : row.keySet()) {
@@ -102,7 +100,7 @@ public class DBUtil {
 		return "";
 	}
 
-	public static boolean selectRowBooleanValue(Connection dbConn, String sql) {
+	public static boolean selectRowBooleanValue(Connection dbConn, SecSql sql) {
 		Map<String, Object> row = selectRow(dbConn, sql);
 
 		for (String key : row.keySet()) {
@@ -134,7 +132,7 @@ public class DBUtil {
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					throw new SQLErrorException("SQL 예외, rs 닫기, SQL :" + sql, e);
+					throw new SQLErrorException("SQL 예외, rs 닫기, SQL : " + sql, e);
 				}
 			}
 
@@ -142,7 +140,7 @@ public class DBUtil {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					throw new SQLErrorException("SQL 예외, stmt 닫기, SQL :" + sql, e);
+					throw new SQLErrorException("SQL 예외, stmt 닫기, SQL : " + sql, e);
 				}
 			}
 
@@ -151,4 +149,30 @@ public class DBUtil {
 		return id;
 	}
 
+	public static int update(Connection dbConn, SecSql sql) {
+		int affectedRows = 0;
+
+		PreparedStatement stmt = null;
+
+		try {
+			stmt = sql.getPreparedStatement(dbConn);
+			affectedRows = stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new SQLErrorException("SQL 예외, SQL : " + sql, e);
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					throw new SQLErrorException("SQL 예외, stmt 닫기, SQL : " + sql, e);
+				}
+			}
+		}
+
+		return affectedRows;
+	}
+
+	public static int delete(Connection dbConn, SecSql sql) {
+		return update(dbConn, sql);
+	}
 }

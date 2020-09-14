@@ -1,14 +1,9 @@
-<%@ page import="java.util.List"%>
-<%@ page import="com.sbs.java.blog.dto.Article"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="pageTitle" value="${cateItemName}"></c:set>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/jsp/part/head.jspf"%>
-<%
-	List<Article> articles = (List<Article>) request.getAttribute("articles");
-	int totalPage = (int) request.getAttribute("totalPage");
-	int paramPage = (int) request.getAttribute("page");
-	String cateItemName = (String)request.getAttribute("cateItemName");
-%>
+
 <!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
@@ -57,47 +52,59 @@
 .page-box>ul>li.current>a {
 	color: red;
 }
-.table {
-    width:100%;
-	border-top: 1px solid black;
-	padding: 5px 0;
-}
-.table:last-child{
-	border-bottom: 1px solid black;
-}
-
 </style>
-
-<h1 class="con">
-	<%=cateItemName%>
-</h1>
 
 <div class="con">총 게시물 수 : ${totalCount}</div>
 
-<div class="con">
-
-	<ul>
-		<%
-			for (Article article : articles) {
-		%>
-		<li class="table"><a href="./detail?id=<%=article.getId()%>"><%=article.getId()%>,
-				<%=article.getCateItemId()%>, <%=article.getTitle()%></a></li>
-		<%
-			}
-		%>
-	</ul>
+<div class="con table-box">
+	<table>
+		<colgroup>
+			<col width="100">
+			<col width="200">
+			<col width="120">
+			<col width="120">
+			
+			<col>
+			<col width="120">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>날짜</th>
+				<th>작성자</th>
+				<th>카테고리 아이템</th>
+				<th>제목</th>
+				<th>비고</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${articles}" var="article">
+				<tr>
+					<td class="text-align-center"><a
+						href="./detail?id=${article.id}">${article.id}</a></td>
+					<td class="text-align-center">${article.regDate}</td>
+					<td class="text-align-center">${article.extra.writer}</td>
+					<td class="text-align-center">${article.cateItemId}</td>
+					<td><a href="./detail?id=${article.id}">${article.title}</a></td>
+					<td><c:if test="${article.extra.deleteAvailable}">
+							<a onclick="if ( confirm('삭제하시겠습니까?') == false ) return false;"
+								href="./doDelete?id=${article.id}">삭제</a>
+						</c:if> <c:if test="${article.extra.modifyAvailable}">
+							<a href="./modify?id=${article.id}">수정</a>
+						</c:if></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 </div>
 
 <div class="con page-box">
 	<ul class="flex flex-jc-c">
-		<%
-			for (int i = 1; i <= totalPage; i++) {
-		%>
-		<li class="<%=i == paramPage ? "current" : ""%>"><a
-			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=<%=i%>" class="block"><%=i%></a></li>
-		<%
-			}
-		%>
+		<c:forEach var="i" begin="1" end="${totalPage}" step="1">
+		<li class="${i == cPage ? 'current' : ''}"><a
+			href="?cateItemId=${param.cateItemId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}"
+			class="block">${i}</a></li>
+		</c:forEach>
 	</ul>
 </div>
 
@@ -110,6 +117,7 @@
 			type="text" name="searchKeyword" value="${param.searchKeyword}" />
 		<button type="submit">검색</button>
 	</form>
+
 </div>
 
 <%@ include file="/jsp/part/foot.jspf"%>

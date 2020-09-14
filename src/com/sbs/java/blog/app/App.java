@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sbs.java.blog.config.Config;
 import com.sbs.java.blog.controller.ArticleController;
 import com.sbs.java.blog.controller.Controller;
 import com.sbs.java.blog.controller.HomeController;
@@ -37,19 +38,29 @@ public class App {
 			resp.getWriter().append("DB 드라이버 클래스 로딩 실패");
 			return;
 		}
-		// DB 커넥터 로딩 성공	
+		// DB 커넥터 로딩 성공
 	}
 
-	private String getDbUrl() {
-		return "jdbc:mysql://site27.iu.gy:3306/site27?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true";
+	private String getDbUri() {
+		return "jdbc:mysql://site27.iu.gy:3306/site27?serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=convertToNull";
 	}
 
 	public void start() throws ServletException, IOException {
+		// Config 구성
+
+		if (req.getServletContext().getInitParameter("gmailId") != null) {
+			Config.gmailId = (String) req.getServletContext().getInitParameter("gmailId");
+		}
+		
+		if (req.getServletContext().getInitParameter("gmailPw") != null) {
+			Config.gmailPw = (String) req.getServletContext().getInitParameter("gmailPw");
+		}
+		
 		// DB 드라이버 로딩
 		loadDbDriver();
 
 		// DB 접속정보 세팅
-		String url = getDbUrl();
+		String uri = getDbUri();
 		String user = getDbId();
 		String password = getDbPassword();
 
@@ -57,7 +68,7 @@ public class App {
 
 		try {
 			// DB 접속 성공
-			dbConn = DriverManager.getConnection(url, user, password);
+			dbConn = DriverManager.getConnection(uri, user, password);
 
 			// 올바른 컨트롤러로 라우팅
 			route(dbConn, req, resp);
@@ -116,6 +127,9 @@ public class App {
 				String viewPath = "/jsp/" + actionResult;
 				req.getRequestDispatcher(viewPath).forward(req, resp);
 			} else if (actionResult.startsWith("html:")) {
+				resp.getWriter().append(actionResult.substring(5));
+			} else if (actionResult.startsWith("json:")) {
+				resp.setContentType("application/json");
 				resp.getWriter().append(actionResult.substring(5));
 			} else {
 				resp.getWriter().append("처리할 수 없는 액션결과입니다.");
